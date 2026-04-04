@@ -1,0 +1,6 @@
+*.pth
+*.pt
+__pycache__/
+.DS_Store
+dataset/
+predictions/

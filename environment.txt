@@ -5,3 +5,8 @@ tqdm
 torch
 transforms
 torchvision
+dvc
+dvc-s3
+mlflow
+dagshub
+

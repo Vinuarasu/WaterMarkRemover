@@ -1,0 +1,13 @@
+data:
+  model: Model
+  dataset: dataset
+  train: dataset/train
+  test: dataset/test
+  output: predictions
+
+parameters:
+  epochs: 1
+  batch_size: 32
+  lr: 0.0002
+  img_size: 64
+  timesteps: 200 

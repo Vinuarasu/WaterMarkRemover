@@ -14,6 +14,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+import yaml
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -22,16 +23,19 @@ warnings.filterwarnings('ignore')
 # 1. Configuration & Setup
 # ==========================================
 # This path is verified from your file listing
-DATA_DIR = 'dataset/'
-OUTPUT_DIR = 'predictions'
+directory = yaml.safe_load(open("parameters.yaml"))['data']
+params = yaml.safe_load(open("parameters.yaml"))['parameters']
+
+DATA_DIR = directory['dataset']
+OUTPUT_DIR = directory['output']
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-EPOCHS = 5
-BATCH_SIZE = 32
-LEARNING_RATE = 2e-4
-IMG_SIZE = 64
-TIMESTEPS = 200 
+EPOCHS = params['epochs']
+BATCH_SIZE = params['batch_size']
+LEARNING_RATE = params['lr']
+IMG_SIZE = params['img_size']
+TIMESTEPS = params['timesteps']
 
 #DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -53,12 +57,12 @@ class WatermarkDataset(Dataset):
         
         
         if is_test:
-            search_pattern = os.path.join(self.root_dir, "test/*.png")
+            search_pattern = os.path.join(directory['test'], "*.png")
             all_pngs = glob.glob(search_pattern, recursive=True)
             # Filter for images in the 'test' directory
             self.image_paths = sorted(all_pngs)
         else:
-            search_pattern = os.path.join(self.root_dir, "train/**/*.png")
+            search_pattern = os.path.join(directory['train'], "**/*.png")
             all_pngs = glob.glob(search_pattern, recursive=True)
             # Filter for images NOT in the 'test' directory (training pairs)
             self.image_paths = sorted([p for p in all_pngs if 'clean' not in p.lower()])
@@ -203,7 +207,7 @@ if __name__ == '__main__':
             pbar.set_postfix({'Loss': f"{loss.item():.4f}"})
         history_loss.append(running_loss / len(train_dataset))
 
-    torch.save(model.state_dict(), "Model/model.pth")
+    torch.save(model.state_dict(), directory['model']+"/model.pth")
     # Save Loss Graph
     plt.figure(figsize=(10, 5))
     plt.plot(range(1, EPOCHS + 1), history_loss, marker='o', color='crimson')
@@ -238,20 +242,4 @@ if __name__ == '__main__':
             for idx in range(b):
                 Image.fromarray(reverse_transform(x[idx])).save(os.path.join(OUTPUT_DIR, filenames[idx]))
 
-    # ==========================================
-    # 7. Final submission.csv
-    # ==========================================
-    submission_data = []
-    predicted_files = sorted([f for f in os.listdir(OUTPUT_DIR) if f.endswith('.png')])
-
-    for filename in tqdm(predicted_files, desc="Encoding Results"):
-        with open(os.path.join(OUTPUT_DIR, filename), "rb") as f:
-            encoded_str = base64.b85encode(f.read()).decode("utf-8")
-        submission_data.append({
-            "datapointID": filename, 
-            "subtaskID": 1, 
-            "answer": encoded_str
-        })
-
-    pd.DataFrame(submission_data).to_csv('submission.csv', index=False)
-    print("\nComplete! 'submission.csv' generated.")
+    

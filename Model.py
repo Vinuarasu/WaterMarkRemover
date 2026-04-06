@@ -18,6 +18,7 @@ import yaml
 import mlflow
 import warnings
 warnings.filterwarnings('ignore')
+from mlflow.models.signature import infer_signature
 
 # ==========================================
 # 1. Configuration & Setup
@@ -213,7 +214,8 @@ if __name__ == '__main__':
             mlflow.log_metric("loss", running_loss / len(train_dataset), step=epoch)
         mlflow.log_param("LR", LEARNING_RATE)
         mlflow.log_param("Epoch", EPOCHS)
-        mlflow.pytorch.log_model(model, "Improved LR model")
+        signature = infer_signature(model_input, predicted_noise)
+        saved_model = mlflow.pytorch.log_model(model, "Improved LR model", signature=signature)
 
         torch.save(model.state_dict(), directory['model']+"/model.pth")
         # Save Loss Graph
@@ -228,11 +230,12 @@ if __name__ == '__main__':
         # ==========================================
         # 6. Inference & Sampling
         # ==========================================
-        if 0:
+        if 1:
             print("\n--- Generating Predictions ---")
             test_dataset = WatermarkDataset(DATA_DIR, is_test=True)
             test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
-            model.eval()
+            #model.eval()
+            Pred_model = mlflow.pytorch.load_model(saved_model.model_uri)
 
             with torch.no_grad():
                 for watermarked, filenames in tqdm(test_loader, desc="Inference"):
@@ -242,7 +245,7 @@ if __name__ == '__main__':
                     for i in reversed(range(TIMESTEPS)):
                         t = torch.full((b,), i, dtype=torch.long, device=DEVICE)
                         model_input = torch.cat([x, watermarked], dim=1)
-                        pred_noise = model(model_input, t)
+                        pred_noise = Pred_model(model_input, t)
                         a_t = alpha[t].view(-1, 1, 1, 1).to(DEVICE)
                         a_bar_t = alpha_bar[t].view(-1, 1, 1, 1).to(DEVICE)
                         b_t = beta[t].view(-1, 1, 1, 1).to(DEVICE)

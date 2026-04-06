@@ -2,6 +2,6 @@
 *.pt
 __pycache__/
 .DS_Store
-dataset/
 predictions/
 mlartifacts/
+/dataset

@@ -1,0 +1,30 @@
+import os
+import pandas as pd
+import base64
+import argparse
+
+
+def generate_csv(image_folder, output_csv):
+    data = []
+
+    files = sorted([f for f in os.listdir(image_folder) if f.endswith(".png")])
+
+    for filename in files:
+        filepath = os.path.join(image_folder, filename)
+        with open(filepath, "rb") as f:
+            encoded_str = base64.b85encode(f.read()).decode("utf-8")
+
+        data.append({"datapointID": filename, "answer": encoded_str})
+
+    df = pd.DataFrame(data)
+    df.to_csv(output_csv, index=False)
+    print(f"Created {output_csv} with {len(df)} entries.")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("folder", help="Path to the folder containing images")
+    parser.add_argument("output", help="Path for the resulting CSV")
+    args = parser.parse_args()
+
+    generate_csv(args.folder, args.output)

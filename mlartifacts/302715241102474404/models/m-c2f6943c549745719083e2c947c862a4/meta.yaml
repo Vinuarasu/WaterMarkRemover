@@ -1,0 +1,10 @@
+artifact_location: /Users/vinu/Work/MLops/WaterMarkRemoval/mlartifacts/302715241102474404/models/m-c2f6943c549745719083e2c947c862a4/artifacts
+creation_timestamp: 1775410976047
+experiment_id: '302715241102474404'
+last_updated_timestamp: 1775410979041
+model_id: m-c2f6943c549745719083e2c947c862a4
+model_type: null
+name: Improved LR model
+source_run_id: c54f172181f84fed931ca631a10ffc5a
+status: 2
+status_message: null

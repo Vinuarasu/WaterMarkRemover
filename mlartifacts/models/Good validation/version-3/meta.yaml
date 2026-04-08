@@ -1,0 +1,16 @@
+creation_timestamp: 1775410325439
+current_stage: None
+deployment_job_state: null
+description: ''
+last_updated_timestamp: 1775410325439
+model_id: m-cb0a534b535348e093cd98a8fac8a77a
+name: Good validation
+run_id: 473580328f01469d9d3362fd8822bf68
+run_link: ''
+source: models:/m-cb0a534b535348e093cd98a8fac8a77a
+status: READY
+status_message: null
+storage_location: /Users/vinu/Work/MLops/WaterMarkRemoval/mlartifacts/302715241102474404/models/m-cb0a534b535348e093cd98a8fac8a77a/artifacts
+user_id: null
+version: 3
+workspace: default

@@ -1,0 +1,14 @@
+artifact_uri: /Users/vinu/Work/MLops/WaterMarkRemoval/mlartifacts/302715241102474404/477192d58dad47aba59ddeeac75ceacc/artifacts
+end_time: 1775411086364
+entry_point_name: ''
+experiment_id: '302715241102474404'
+lifecycle_stage: active
+run_id: 477192d58dad47aba59ddeeac75ceacc
+run_name: luminous-stoat-795
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1775411054747
+status: 4
+tags: []
+user_id: vinu

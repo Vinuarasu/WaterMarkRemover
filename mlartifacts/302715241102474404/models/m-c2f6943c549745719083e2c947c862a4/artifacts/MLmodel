@@ -1,0 +1,29 @@
+artifact_path: /Users/vinu/Work/MLops/WaterMarkRemoval/mlartifacts/302715241102474404/models/m-c2f6943c549745719083e2c947c862a4/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.14.3
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.11.0
+is_signature_from_type_hint: false
+mlflow_version: 3.10.1
+model_id: m-c2f6943c549745719083e2c947c862a4
+model_size_bytes: 7921979
+model_uuid: m-c2f6943c549745719083e2c947c862a4
+prompts: null
+run_id: c54f172181f84fed931ca631a10ffc5a
+signature:
+  inputs: '[{"type": "any", "required": true}]'
+  outputs: '[{"type": "any", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-04-05 17:42:56.050426'
